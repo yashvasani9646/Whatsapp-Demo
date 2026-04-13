@@ -1,62 +1,17 @@
 import React from "react";
 import { FiVideo, FiLink, FiPhone, FiCalendar } from "react-icons/fi";
+import { FiPhoneIncoming, FiPhoneOutgoing, FiPhoneMissed } from "react-icons/fi";
 
 const CallsPage = () => {
 
-    const users = [
-        "Rahul Sharma",
-        "Priya Patel",
-        "Amit Verma",
-        "Sneha Joshi",
-        "Vikas Yadav",
-        "Neha Gupta",
-        "Rohit Singh",
-        "Anjali Mehta",
-        "Karan Malhotra",
-        "Pooja Shah",
-        "Manish Kumar",
-        "Riya Desai",
-        "Akash Jain",
-        "Nikita Singh",
-        "Yash Patel",
-        "Hardik Pandya",
-        "Virat Kohli",
-        "KL Rahul",
-        "Shubham Gupta",
-        "Dhruv Patel",
-        "Harsh Shah",
-        "Jay Mehta",
-        "Krishna Patel",
-        "Meet Shah",
-        "Dev Patel",
-        "Parth Desai",
-        "Tushar Patel",
-        "Nirav Shah",
-        "Hiren Patel",
-        "Jignesh Patel",
-        "Bhavesh Patel",
-        "Sagar Patel",
-        "Chirag Patel",
-        "Hemal Shah",
-        "Kishan Patel",
-        "Rajesh Kumar",
-        "Sunil Yadav",
-        "Deepak Singh",
-        "Arjun Mehta",
-        "Mohit Verma",
-        "Sanjay Gupta",
-        "Ramesh Patel",
-        "Ajay Sharma",
-        "Vivek Mishra",
-        "Ankit Tiwari",
-        "Siddharth Jain",
-        "Varun Kapoor",
-        "Aditya Roy",
-        "Nikhil Agarwal",
-        "Tarun Saxena"
+   
+
+    const calls = [
+        { id: 1, name: "Rahul Sharma", type: "incoming", time: "2:30 PM" },
+        { id: 2, name: "Priya Patel", type: "missed", time: "Yesterday" },
+        { id: 3, name: "Amit Verma", type: "outgoing", time: "Monday" },
+        { id: 4, name: "Sneha Joshi", type: "incoming", time: "Sunday" },
     ];
-
-
     return (
         <div className="flex flex-1 h-full">
 
@@ -80,18 +35,38 @@ const CallsPage = () => {
                 <div className="flex-1 overflow-y-auto px-3">
                     <h3 className="text-sm text-gray-500 mb-2">Recent</h3>
 
-                    {users.map((name, i) => (
+                    {calls.map((chat, i) => (
                         <div
-                            key={i}
+                            key={chat.id}
                             className="flex items-center gap-3 py-2 px-2 rounded-lg cursor-pointer hover:bg-gray-100 transition"
                         >
                             <img
                                 src={`https://i.pravatar.cc/40?img=${i + 1}`}
                                 className="w-10 h-10 rounded-full"
                             />
+
                             <div className="flex-1">
-                                <p className="font-medium">{name}</p>
-                                <p className="text-sm text-gray-400">Outgoing</p>
+                                <p className="font-medium">{chat.name}</p>
+
+                                <p className="text-sm flex items-center gap-1">
+                                    {chat.type === "incoming" && (
+                                        <FiPhoneIncoming className="text-green-500" />
+                                    )}
+                                    {chat.type === "outgoing" && (
+                                        <FiPhoneOutgoing className="text-gray-500" />
+                                    )}
+                                    {chat.type === "missed" && (
+                                        <FiPhoneMissed className="text-red-500" />
+                                    )}
+
+                                    <span className="text-gray-400 capitalize">
+                                        {chat.type}
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div className="text-xs text-gray-400">
+                                {chat.time}
                             </div>
                         </div>
                     ))}

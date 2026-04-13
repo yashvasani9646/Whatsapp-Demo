@@ -1,8 +1,13 @@
-import React from "react";
+import { useState } from "react";
 import { LuMessageSquarePlus } from "react-icons/lu";
 import { IoMdMore } from "react-icons/io";
 
-const Sidebar = ({ setSelectedChat, chats, archiveChat }) => {
+const Sidebar = ({ setSelectedChat, chats, archiveChat, selectedChat }) => {
+    const [search, setSearch] = useState("");
+
+    const filteredChats = chats.filter((chat) =>
+        chat.name.toLowerCase().includes(search.toLowerCase())
+    );
 
     return (
         <div className="w-full md:w-[350px] h-full flex flex-col overflow-hidden">
@@ -17,7 +22,9 @@ const Sidebar = ({ setSelectedChat, chats, archiveChat }) => {
 
             <div className="px-3 pb-2">
                 <input
-                    placeholder="Search or start new chat"
+                    placeholder="Search..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                     className="w-full p-2 rounded-lg bg-gray-100 outline-none"
                 />
             </div>
@@ -37,8 +44,15 @@ const Sidebar = ({ setSelectedChat, chats, archiveChat }) => {
 
             {/* Chats list (scroll here only) */}
             <div className="flex-1 overflow-y-auto">
+                {
+                    filteredChats.length === 0 && (
+                        <p className="text-center text-gray-400 mt-4">
+                            No chats found
+                        </p>
+                    )
+                }
 
-                {chats.map((chat) => (
+                {filteredChats.map((chat) => (
                     <div
                         key={chat.id}
                         onClick={() => {
@@ -46,7 +60,11 @@ const Sidebar = ({ setSelectedChat, chats, archiveChat }) => {
                             setSelectedChat(chat);
                         }}
                         onDoubleClick={() => archiveChat(chat)}
-                        className="flex items-center gap-3 p-3 hover:bg-gray-100 cursor-pointer"
+                        className={`flex items-center gap-3 p-3 cursor-pointer
+            ${selectedChat?.id === chat.id
+                                ? "bg-green-100 border-l-4 border-green-500"
+                                : "hover:bg-gray-100"}
+        `}
                     >
                         <img
                             src={chat.img}
@@ -70,7 +88,6 @@ const Sidebar = ({ setSelectedChat, chats, archiveChat }) => {
                                     {chat.unread}
                                 </span>
                             )}
-
                         </div>
 
                     </div>

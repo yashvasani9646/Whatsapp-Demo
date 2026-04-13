@@ -16,6 +16,8 @@ function App() {
       time: "9:45 am",
       img: "https://i.pravatar.cc/40?img=11",
       unread: 2,
+      online: true,
+      lastSeen: "2:30 PM",
       messages: [
         { text: "Kal milte hai", sender: "other" },
         { text: "Haan bhai 👍", sender: "me" },
@@ -28,6 +30,8 @@ function App() {
       time: "9:30 am",
       img: "https://i.pravatar.cc/40?img=12",
       unread: 0,
+      online: false,
+      lastSeen: "Yesterday",
       messages: [
         { text: "Okay 👍", sender: "other" },
         { text: "Thanks 😄", sender: "me" },
@@ -40,6 +44,8 @@ function App() {
       time: "Yesterday",
       img: "https://i.pravatar.cc/40?img=13",
       unread: 1,
+      online: true,
+      lastSeen: "1:10 PM",
       messages: [
         { text: "Photo bheji hai", sender: "other" },
         { text: "Nice 👌", sender: "me" },
@@ -52,6 +58,8 @@ function App() {
       time: "Yesterday",
       img: "https://i.pravatar.cc/40?img=14",
       unread: 0,
+      online: false,
+      lastSeen: "Today 10:00 AM",
       messages: [
         { text: "Call karna", sender: "other" },
         { text: "Abhi karta hu", sender: "me" },
@@ -64,6 +72,8 @@ function App() {
       time: "Yesterday",
       img: "https://i.pravatar.cc/40?img=15",
       unread: 3,
+      online: true,
+      lastSeen: "5:45 PM",
       messages: [
         { text: "Message seen", sender: "other" },
         { text: "Reply karo 😅", sender: "me" },
@@ -76,6 +86,8 @@ function App() {
       time: "Saturday",
       img: "https://i.pravatar.cc/40?img=16",
       unread: 0,
+      online: false,
+      lastSeen: "Saturday 6:20 PM",
       messages: [
         { text: "Typing...", sender: "other" },
         { text: "Kya likh rahi ho? 😄", sender: "me" },
@@ -88,6 +100,8 @@ function App() {
       time: "Saturday",
       img: "https://i.pravatar.cc/40?img=17",
       unread: 0,
+      online: true,
+      lastSeen: "3:00 PM",
       messages: [
         { text: "😂😂😂", sender: "other" },
         { text: "Kya hua? 😂", sender: "me" },
@@ -100,6 +114,8 @@ function App() {
       time: "Friday",
       img: "https://i.pravatar.cc/40?img=18",
       unread: 2,
+      online: false,
+      lastSeen: "Friday 8:00 PM",
       messages: [
         { text: "Voice note bheja", sender: "other" },
         { text: "Sun liya 👍", sender: "me" },
@@ -112,6 +128,8 @@ function App() {
       time: "Friday",
       img: "https://i.pravatar.cc/40?img=19",
       unread: 0,
+      online: true,
+      lastSeen: "1:15 PM",
       messages: [
         { text: "Let's go", sender: "other" },
         { text: "Ready 😎", sender: "me" },
@@ -124,6 +142,8 @@ function App() {
       time: "Thursday",
       img: "https://i.pravatar.cc/40?img=20",
       unread: 1,
+      online: false,
+      lastSeen: "Thursday 9:00 AM",
       messages: [
         { text: "Good morning ☀️", sender: "other" },
         { text: "Morning 😊", sender: "me" },
@@ -136,6 +156,8 @@ function App() {
       time: "Thursday",
       img: "https://i.pravatar.cc/40?img=21",
       unread: 0,
+      online: true,
+      lastSeen: "4:30 PM",
       messages: [
         { text: "File bheji hai", sender: "other" },
         { text: "Check kar li 👍", sender: "me" },
@@ -148,6 +170,8 @@ function App() {
       time: "Wednesday",
       img: "https://i.pravatar.cc/40?img=22",
       unread: 4,
+      online: false,
+      lastSeen: "Wednesday 7:45 PM",
       messages: [
         { text: "👍", sender: "other" },
         { text: "👌", sender: "me" },
@@ -160,6 +184,8 @@ function App() {
       time: "Wednesday",
       img: "https://i.pravatar.cc/40?img=23",
       unread: 0,
+      online: true,
+      lastSeen: "5:00 PM",
       messages: [
         { text: "Meeting at 5", sender: "other" },
         { text: "On time 👍", sender: "me" },
@@ -172,6 +198,8 @@ function App() {
       time: "Tuesday",
       img: "https://i.pravatar.cc/40?img=24",
       unread: 2,
+      online: false,
+      lastSeen: "Tuesday 11:30 AM",
       messages: [
         { text: "Done", sender: "other" },
         { text: "Great 😄", sender: "me" },
@@ -184,6 +212,8 @@ function App() {
       time: "Monday",
       img: "https://i.pravatar.cc/40?img=25",
       unread: 0,
+      online: true,
+      lastSeen: "2:00 PM",
       messages: [
         { text: "Check this", sender: "other" },
         { text: "Nice 👍", sender: "me" },
@@ -265,6 +295,7 @@ function App() {
               chats={chats}
               setSelectedChat={setSelectedChat}
               archiveChat={archiveChat}
+              selectedChat={selectedChat}
             />
           </div>
 
