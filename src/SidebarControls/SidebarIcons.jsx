@@ -1,8 +1,9 @@
 import React from 'react'
 import { BsChatLeftText } from "react-icons/bs";
-import { HiOutlineStatusOnline } from "react-icons/hi";
+// import { HiOutlineStatusOnline } from "react-icons/hi";
 import { MdOutlineArchive, MdCall, MdOutlineCampaign } from "react-icons/md";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { MdOutlineWifiTetheringErrorRounded } from "react-icons/md";
 
 const SidebarIcons = ({ setActiveTab, activeTab, darkMode, setDarkMode }) => {
 
@@ -38,7 +39,7 @@ const SidebarIcons = ({ setActiveTab, activeTab, darkMode, setDarkMode }) => {
 
             {/* STATUS */}
             <div className={iconClass("status")} onClick={() => setActiveTab("status")}>
-                <HiOutlineStatusOnline size={22} />
+                <MdOutlineWifiTetheringErrorRounded size={22} />
                 <span className="absolute bottom-1 right-1 w-2 h-2 bg-green-500 rounded-full"></span>
                 {tooltip("Status")}
             </div>
