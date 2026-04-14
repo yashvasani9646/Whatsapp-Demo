@@ -5,9 +5,11 @@ import SidebarIcons from "../SidebarControls/SidebarIcons";
 import StatusPage from "../SidebarControls/StatusPage";
 import ArchivePage from "../SidebarControls/Archivepage";
 import CallsPage from "../SidebarControls/CallPage";
+import ChannelPage from "../SidebarControls/ChannlPage";
 
 function App() {
   const [selectedChat, setSelectedChat] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
   const [chats, setChats] = useState([
     {
       id: 1,
@@ -18,6 +20,7 @@ function App() {
       unread: 2,
       online: true,
       lastSeen: "2:30 PM",
+      typing: false,
       messages: [
         { text: "Kal milte hai", sender: "other" },
         { text: "Haan bhai 👍", sender: "me" },
@@ -46,6 +49,7 @@ function App() {
       unread: 1,
       online: true,
       lastSeen: "1:10 PM",
+      typing: false,
       messages: [
         { text: "Photo bheji hai", sender: "other" },
         { text: "Nice 👌", sender: "me" },
@@ -60,6 +64,7 @@ function App() {
       unread: 0,
       online: false,
       lastSeen: "Today 10:00 AM",
+      typing: true,
       messages: [
         { text: "Call karna", sender: "other" },
         { text: "Abhi karta hu", sender: "me" },
@@ -74,6 +79,7 @@ function App() {
       unread: 3,
       online: true,
       lastSeen: "5:45 PM",
+      typing: false,
       messages: [
         { text: "Message seen", sender: "other" },
         { text: "Reply karo 😅", sender: "me" },
@@ -88,6 +94,7 @@ function App() {
       unread: 0,
       online: false,
       lastSeen: "Saturday 6:20 PM",
+      typing: true,
       messages: [
         { text: "Typing...", sender: "other" },
         { text: "Kya likh rahi ho? 😄", sender: "me" },
@@ -102,6 +109,7 @@ function App() {
       unread: 0,
       online: true,
       lastSeen: "3:00 PM",
+      typing: false,
       messages: [
         { text: "😂😂😂", sender: "other" },
         { text: "Kya hua? 😂", sender: "me" },
@@ -116,6 +124,7 @@ function App() {
       unread: 2,
       online: false,
       lastSeen: "Friday 8:00 PM",
+      typing: true,
       messages: [
         { text: "Voice note bheja", sender: "other" },
         { text: "Sun liya 👍", sender: "me" },
@@ -130,6 +139,7 @@ function App() {
       unread: 0,
       online: true,
       lastSeen: "1:15 PM",
+      typing: false,
       messages: [
         { text: "Let's go", sender: "other" },
         { text: "Ready 😎", sender: "me" },
@@ -144,6 +154,7 @@ function App() {
       unread: 1,
       online: false,
       lastSeen: "Thursday 9:00 AM",
+      typing: false,
       messages: [
         { text: "Good morning ☀️", sender: "other" },
         { text: "Morning 😊", sender: "me" },
@@ -158,6 +169,7 @@ function App() {
       unread: 0,
       online: true,
       lastSeen: "4:30 PM",
+      typing: false,
       messages: [
         { text: "File bheji hai", sender: "other" },
         { text: "Check kar li 👍", sender: "me" },
@@ -172,6 +184,7 @@ function App() {
       unread: 4,
       online: false,
       lastSeen: "Wednesday 7:45 PM",
+      typing: false,
       messages: [
         { text: "👍", sender: "other" },
         { text: "👌", sender: "me" },
@@ -186,6 +199,7 @@ function App() {
       unread: 0,
       online: true,
       lastSeen: "5:00 PM",
+      typing: true,
       messages: [
         { text: "Meeting at 5", sender: "other" },
         { text: "On time 👍", sender: "me" },
@@ -200,6 +214,7 @@ function App() {
       unread: 2,
       online: false,
       lastSeen: "Tuesday 11:30 AM",
+      typing: true,
       messages: [
         { text: "Done", sender: "other" },
         { text: "Great 😄", sender: "me" },
@@ -214,6 +229,7 @@ function App() {
       unread: 0,
       online: true,
       lastSeen: "2:00 PM",
+      typing: true,
       messages: [
         { text: "Check this", sender: "other" },
         { text: "Nice 👍", sender: "me" },
@@ -278,8 +294,13 @@ function App() {
 
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <SidebarIcons setActiveTab={setActiveTab} />
+    <div className={`${darkMode ? "dark" : ""} flex h-screen overflow-hidden bg-[#efeae2] dark:bg-[#0b141a]`}>
+      <SidebarIcons
+        setActiveTab={setActiveTab}
+        activeTab={activeTab}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+      />
 
       {activeTab === "chat" && (
         <div className="flex flex-1 h-full">
@@ -350,7 +371,7 @@ function App() {
           >
 
             {!selectedChat ? (
-              <div className="flex flex-1 items-center justify-center bg-[#efeae2]">
+              <div className="flex flex-1 items-center justify-center bg-[#efeae2] dark:bg-gray-800 text-gray-500 dark:text-gray-300">
                 <div className="text-center text-gray-400">
                   <h2 className="text-xl">Select archived chat</h2>
                   <p className="text-sm mt-2">
@@ -373,13 +394,17 @@ function App() {
         </div>
       )}
 
-      {/* ✅ FIX: CALL KO YAHA LANA HAI */}
       {activeTab === "call" && (
         <div className="flex flex-1 h-full">
           <CallsPage />
         </div>
       )}
 
+      {activeTab === "channel" && (
+        <div className="flex flex-1 h-full">
+          <ChannelPage />
+        </div>
+      )}
     </div>
   );
 }
