@@ -8,6 +8,7 @@ import {
   FiVideo,
   FiBell,
   FiHelpCircle,
+  FiCommand, 
 } from "react-icons/fi";
 
 const ProfilePage = () => {
@@ -21,7 +22,7 @@ const ProfilePage = () => {
     { name: "Chats", desc: "Theme, wallpaper, chat settings", icon: <FiMessageSquare /> },
     { name: "Video & voice", desc: "Camera, microphone & speakers", icon: <FiVideo /> },
     { name: "Notifications", desc: "Messages, groups, sounds", icon: <FiBell /> },
-    { name: "Keyboard shortcuts", desc: "Quick actions", icon: <FiKeyboard /> },
+    { name: "Keyboard shortcuts", desc: "Quick actions", icon: <FiCommand /> }, // ✅ fixed
     { name: "Help and feedback", desc: "Help centre, contact us", icon: <FiHelpCircle /> },
   ];
 
@@ -31,7 +32,7 @@ const ProfilePage = () => {
       {/* LEFT PANEL */}
       <div className="
         w-full md:w-[350px] 
-        bg-white dark:bg-[#0b141a] 
+        bg-white dark:bg-[#111b21]   /* ✅ FIXED */
         border-r border-gray-200 dark:border-gray-800 
         text-black dark:text-white
         flex flex-col
@@ -49,6 +50,7 @@ const ProfilePage = () => {
             className="
               w-full p-2 rounded-full 
               bg-gray-100 dark:bg-[#202c33] 
+              text-black dark:text-white
               outline-none
             "
           />
@@ -64,7 +66,6 @@ const ProfilePage = () => {
 
         {/* MENU */}
         <div className="flex-1 overflow-y-auto px-2">
-
           {menu.map((item) => (
             <div
               key={item.name}
@@ -88,7 +89,6 @@ const ProfilePage = () => {
               </div>
             </div>
           ))}
-
         </div>
 
       </div>
