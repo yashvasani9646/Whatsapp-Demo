@@ -76,6 +76,7 @@ const SidebarIcons = ({ setActiveTab, activeTab, darkMode, setDarkMode }) => {
                 <img
                     src="https://i.pravatar.cc/40"
                     className="w-9 h-9 rounded-full cursor-pointer"
+                    onClick={() => setActiveTab("profile")}
                 />
                 {tooltip("Profile")}
             </div>

@@ -3,13 +3,13 @@ import React from "react";
 const ArchivePage = ({ chats, unarchiveChat, setSelectedChat }) => {
   return (
     <div className="w-full md:w-[350px] h-full flex flex-col border-r 
-bg-white dark:bg-[#0b141a] 
+bg-white dark:bg-[#111b21]
 border-gray-200 dark:border-gray-800
 text-black dark:text-white">
 
       {/* LEFT SIDE */}
       <div className="w-full md:w-[350px] h-full flex flex-col border-r 
-bg-white dark:bg-[#0b141a] 
+bg-white dark:bg-[#111b21]
 border-gray-200 dark:border-gray-800
 text-black dark:text-white">
 
@@ -23,15 +23,13 @@ text-black dark:text-white">
 
         {/* Chat list */}
         <div className="flex-1 overflow-y-auto">
-
           {chats.map((chat) => (
             <div
               key={chat.id}
               onClick={() => setSelectedChat(chat)}
               onDoubleClick={() => unarchiveChat(chat)}
               className="flex items-center gap-3 p-3 
-hover:bg-gray-100 dark:hover:bg-[#202c33] 
-cursor-pointer"
+        hover:bg-gray-100 dark:hover:bg-[#202c33] cursor-pointer"
             >
               <img src={chat.img} className="w-10 h-10 rounded-full" />
 
@@ -43,7 +41,9 @@ cursor-pointer"
               </div>
 
               <div className="text-right">
-                <p className="text-xs text-gray-400 dark:text-gray-500" />
+                <p className="text-xs text-gray-400 dark:text-gray-500">
+                  {chat.time}
+                </p>
                 {chat.unread > 0 && (
                   <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full">
                     {chat.unread}
@@ -52,8 +52,8 @@ cursor-pointer"
               </div>
             </div>
           ))}
-
         </div>
+
       </div>
 
       {/* RIGHT SIDE (empty like WhatsApp) */}

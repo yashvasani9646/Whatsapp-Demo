@@ -8,9 +8,13 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { IoArrowBack } from "react-icons/io5";
 
 const MenuItem = ({ icon, label }) => (
-    <div className="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 cursor-pointer rounded-lg">
-        <span className="text-lg text-gray-600">{icon}</span>
-        <span>{label}</span>
+    <div className="
+        flex items-center gap-3 px-3 py-2 
+        hover:bg-gray-100 dark:hover:bg-[#202c33] 
+        cursor-pointer rounded-lg
+    ">
+        <span className="text-lg text-gray-600 dark:text-gray-300">{icon}</span>
+        <span className="text-black dark:text-white">{label}</span>
     </div>
 );
 

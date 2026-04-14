@@ -10,8 +10,8 @@ const Sidebar = ({ setSelectedChat, chats, archiveChat, selectedChat }) => {
     );
 
     return (
-        <div className="w-full md:w-[350px] h-full flex flex-col overflow-hidden 
-        bg-white dark:bg-gray-900 text-black dark:text-white">
+      <div className="w-full md:w-[350px] h-full flex flex-col overflow-hidden 
+bg-white dark:bg-[#111b21] text-black dark:text-white">
 
             <div className="p-3 flex justify-between items-center">
                 <h2 className="text-xl font-semibold">Chats</h2>

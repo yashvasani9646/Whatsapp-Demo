@@ -6,7 +6,7 @@ import StatusPage from "../SidebarControls/StatusPage";
 import ArchivePage from "../SidebarControls/Archivepage";
 import CallsPage from "../SidebarControls/CallPage";
 import ChannelPage from "../SidebarControls/ChannlPage";
-
+import ProfilePage from "../SidebarControls/ProfilePage";
 function App() {
   const [selectedChat, setSelectedChat] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
@@ -371,7 +371,7 @@ function App() {
           >
 
             {!selectedChat ? (
-              <div className="flex flex-1 items-center justify-center bg-[#efeae2] dark:bg-gray-800 text-gray-500 dark:text-gray-300">
+              <div className="flex flex-1 items-center justify-center bg-[#efeae2] dark:bg-[#0b141a] text-gray-500 dark:text-gray-300">
                 <div className="text-center text-gray-400">
                   <h2 className="text-xl">Select archived chat</h2>
                   <p className="text-sm mt-2">
@@ -403,6 +403,11 @@ function App() {
       {activeTab === "channel" && (
         <div className="flex flex-1 h-full">
           <ChannelPage />
+        </div>
+      )}
+      {activeTab === "profile" && (
+        <div className="flex flex-1 h-full">
+          <ProfilePage />
         </div>
       )}
     </div>
