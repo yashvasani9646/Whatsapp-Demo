@@ -8,11 +8,18 @@ import {
   FiVideo,
   FiBell,
   FiHelpCircle,
-  FiCommand, 
+  FiCommand,
+  FiLogOut, // ✅ added
 } from "react-icons/fi";
 
 const ProfilePage = () => {
   const [active, setActive] = useState("Privacy");
+
+  // ✅ logout function
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    window.location.reload();
+  };
 
   const menu = [
     { name: "General", desc: "Startup and close", icon: <FiSettings /> },
@@ -22,8 +29,11 @@ const ProfilePage = () => {
     { name: "Chats", desc: "Theme, wallpaper, chat settings", icon: <FiMessageSquare /> },
     { name: "Video & voice", desc: "Camera, microphone & speakers", icon: <FiVideo /> },
     { name: "Notifications", desc: "Messages, groups, sounds", icon: <FiBell /> },
-    { name: "Keyboard shortcuts", desc: "Quick actions", icon: <FiCommand /> }, // ✅ fixed
+    { name: "Keyboard shortcuts", desc: "Quick actions", icon: <FiCommand /> },
     { name: "Help and feedback", desc: "Help centre, contact us", icon: <FiHelpCircle /> },
+
+    // ✅ NEW (logout)
+    { name: "Logout", desc: "Sign out from account", icon: <FiLogOut />, isLogout: true },
   ];
 
   return (
@@ -32,7 +42,7 @@ const ProfilePage = () => {
       {/* LEFT PANEL */}
       <div className="
         w-full md:w-[350px] 
-        bg-white dark:bg-[#111b21]   /* ✅ FIXED */
+        bg-white dark:bg-[#111b21]
         border-r border-gray-200 dark:border-gray-800 
         text-black dark:text-white
         flex flex-col
@@ -69,7 +79,13 @@ const ProfilePage = () => {
           {menu.map((item) => (
             <div
               key={item.name}
-              onClick={() => setActive(item.name)}
+              onClick={() => {
+                if (item.isLogout) {
+                  handleLogout(); // ✅ logout click
+                } else {
+                  setActive(item.name);
+                }
+              }}
               className={`
                 flex items-start gap-3 p-3 rounded-lg cursor-pointer transition
                 ${active === item.name 

@@ -7,9 +7,13 @@ import ArchivePage from "../SidebarControls/Archivepage";
 import CallsPage from "../SidebarControls/CallPage";
 import ChannelPage from "../SidebarControls/ChannlPage";
 import ProfilePage from "../SidebarControls/ProfilePage";
+import { useEffect } from "react";
+import LoginPage from "../LoginPage/LoginPage";
 function App() {
   const [selectedChat, setSelectedChat] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [chats, setChats] = useState([
     {
       id: 1,
@@ -291,7 +295,15 @@ function App() {
 
   const [activeTab, setActiveTab] = useState("chat");
 
-
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+  if (!isLoggedIn) {
+    return <LoginPage setIsLoggedIn={setIsLoggedIn} />;
+  }
 
   return (
     <div className={`${darkMode ? "dark" : ""} flex h-screen overflow-hidden bg-[#efeae2] dark:bg-[#0b141a]`}>
