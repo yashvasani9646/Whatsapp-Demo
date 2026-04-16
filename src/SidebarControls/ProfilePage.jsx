@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; // ✅ useEffect added
+import React, { useState, useEffect } from "react";
 import {
   FiSettings,
   FiUser,
@@ -11,24 +11,29 @@ import {
   FiCommand,
   FiLogOut,
 } from "react-icons/fi";
+import ProfileDetails from "../Profile/ProfileDetails";
+import { FiArrowLeft } from "react-icons/fi";
 
 const ProfilePage = () => {
-  const [active, setActive] = useState("Privacy");
-
-  // ✅ NEW: user state
+  const [active, setActive] = useState("");
   const [user, setUser] = useState(null);
 
-  // ✅ NEW: API call
+  // 🔥 NEW: image state
+  const [image, setImage] = useState(null);
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("accessToken");
 
-        const res = await fetch("https://api.escuelajs.co/api/v1/auth/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          "https://api.escuelajs.co/api/v1/auth/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = await res.json();
         setUser(data);
@@ -40,7 +45,14 @@ const ProfilePage = () => {
     fetchProfile();
   }, []);
 
-  // ✅ logout function
+  // 🔥 NEW: image change function
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     window.location.reload();
@@ -60,25 +72,21 @@ const ProfilePage = () => {
   ];
 
   return (
-    <div className="flex flex-1 h-full">
+    <div className="flex w-full h-screen">
 
       {/* LEFT PANEL */}
-      <div className="
-        w-full md:w-[350px] 
-        bg-white dark:bg-[#111b21]
+      <div className={`w-full md:w-[350px] 
+        ${active === "Profile" ? "hidden md:flex" : "flex"} 
+        bg-white dark:bg-[#111b21] 
         border-r border-gray-200 dark:border-gray-800 
-        text-black dark:text-white
-        flex flex-col
-      ">
+        text-black dark:text-white 
+        flex-col`}>
 
         {/* HEADER */}
         <div className="p-4">
-          {/* ✅ dynamic name */}
           <h2 className="text-xl font-semibold">
             {user?.name || "Loading..."}
           </h2>
-
-          {/* ✅ email (optional) */}
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {user?.email}
           </p>
@@ -88,21 +96,25 @@ const ProfilePage = () => {
         <div className="px-3 pb-3">
           <input
             placeholder="Search"
-            className="
-              w-full p-2 rounded-full 
-              bg-gray-100 dark:bg-[#202c33] 
-              text-black dark:text-white
-              outline-none
-            "
+            className="w-full p-2 rounded-full bg-gray-100 dark:bg-[#202c33] text-black dark:text-white outline-none"
           />
         </div>
 
-        {/* PROFILE IMAGE */}
+        {/* 🔥 PROFILE IMAGE (CLICKABLE) */}
         <div className="flex flex-col items-center py-4">
-          <img
-            src={user?.avatar || "https://i.pravatar.cc/100"} // ✅ dynamic image
-            className="w-24 h-24 rounded-full"
-          />
+          <label className="cursor-pointer">
+            <img
+              src={image || user?.avatar || "https://i.pravatar.cc/100"}
+              className="w-24 h-24 rounded-full border-2 border-green-500 hover:opacity-80 transition"
+            />
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
+          </label>
         </div>
 
         {/* MENU */}
@@ -117,12 +129,10 @@ const ProfilePage = () => {
                   setActive(item.name);
                 }
               }}
-              className={`
-                flex items-start gap-3 p-3 rounded-lg cursor-pointer transition
-                ${active === item.name 
-                  ? "bg-gray-100 dark:bg-[#202c33]" 
-                  : "hover:bg-gray-100 dark:hover:bg-[#202c33]"}
-              `}
+              className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer transition ${active === item.name
+                  ? "bg-gray-100 dark:bg-[#202c33]"
+                  : "hover:bg-gray-100 dark:hover:bg-[#202c33]"
+                }`}
             >
               <div className="text-lg text-gray-500 dark:text-gray-400 mt-1">
                 {item.icon}
@@ -137,20 +147,30 @@ const ProfilePage = () => {
             </div>
           ))}
         </div>
-
       </div>
 
       {/* RIGHT SIDE */}
-      <div className="
-        hidden md:flex flex-1 
-        items-center justify-center 
-        bg-[#efeae2] dark:bg-[#0b141a]
-      ">
-        <div className="text-gray-500 dark:text-gray-400">
-          Select a setting to view details
-        </div>
-      </div>
+      <div className={`${active === "Profile" ? "flex" : "hidden md:flex"} flex-1 bg-[#efeae2] dark:bg-[#0b141a]`}>
 
+        {active === "Profile" ? (
+          <div className="w-full">
+
+            {/* BACK HEADER */}
+            <div className="flex items-center gap-3 p-4 bg-[#202c33] text-white md:hidden">
+              <button onClick={() => setActive("")}>
+                <FiArrowLeft size={20} />
+              </button>
+              <span className="font-medium">Profile</span>
+            </div>
+
+            <ProfileDetails user={user} />
+          </div>
+        ) : (
+          <div className="flex items-center justify-center w-full h-full text-gray-500 dark:text-gray-400">
+            Select a setting to view details
+          </div>
+        )}
+      </div>
     </div>
   );
 };
