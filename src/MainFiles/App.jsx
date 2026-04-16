@@ -1,3 +1,5 @@
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import Sidebar from "../MainChatFlows/Sidebar";
 import Chat from "../MainChatFlows/Chat";
@@ -13,6 +15,7 @@ function App() {
   const [selectedChat, setSelectedChat] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   const [chats, setChats] = useState([
     {
@@ -302,127 +305,144 @@ function App() {
     }
   }, []);
   if (!isLoggedIn) {
-    return <LoginPage setIsLoggedIn={setIsLoggedIn} />;
+    return (
+      <>
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          theme="dark"
+        />
+
+        <LoginPage setIsLoggedIn={setIsLoggedIn} />
+      </>
+    );
   }
 
+
   return (
-    <div className={`${darkMode ? "dark" : ""} flex h-screen overflow-hidden bg-[#efeae2] dark:bg-[#0b141a]`}>
-      <SidebarIcons
-        setActiveTab={setActiveTab}
-        activeTab={activeTab}
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-      />
+    <>
 
-      {activeTab === "chat" && (
-        <div className="flex flex-1 h-full">
 
-          {/* Sidebar */}
-          <div
-            className={`
+      {/* tumhara pura existing UI */}
+
+      <div className={`${darkMode ? "dark" : ""} flex h-screen overflow-hidden bg-[#efeae2] dark:bg-[#0b141a]`}>
+        <SidebarIcons
+          setActiveTab={setActiveTab}
+          activeTab={activeTab}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+        />
+
+        {activeTab === "chat" && (
+          <div className="flex flex-1 h-full">
+
+            {/* Sidebar */}
+            <div
+              className={`
         ${selectedChat ? "hidden md:block" : "block"}
         w-full md:w-[350px] h-full flex flex-col
       `}
-          >
-            <Sidebar
-              chats={chats}
-              setSelectedChat={setSelectedChat}
-              archiveChat={archiveChat}
-              selectedChat={selectedChat}
-            />
-          </div>
+            >
+              <Sidebar
+                chats={chats}
+                setSelectedChat={setSelectedChat}
+                archiveChat={archiveChat}
+                selectedChat={selectedChat}
+              />
+            </div>
 
-          {/* Chat */}
-          <div
-            className={`
+            {/* Chat */}
+            <div
+              className={`
         ${selectedChat ? "block" : "hidden md:block"}
         flex-1 h-full flex flex-col
       `}
-          >
-            <Chat
-              selectedChat={selectedChat}
-              chats={chats}
-              archivedChats={archivedChats}
-              setChats={setChats}
-              setSelectedChat={setSelectedChat}
-            />
-          </div>
-
-        </div>
-      )}
-
-      {activeTab === "status" && (
-        <div className="flex-1 flex items-center justify-center h-full">
-          <StatusPage />
-        </div>
-      )}
-
-      {activeTab === "archive" && (
-        <div className="flex flex-1 h-full">
-
-          {/* LEFT */}
-          <div
-            className={`
-        ${selectedChat ? "hidden md:block" : "block"}
-        w-full md:w-[350px] h-full
-      `}
-          >
-            <ArchivePage
-              chats={archivedChats}
-              unarchiveChat={unarchiveChat}
-              setSelectedChat={setSelectedChat}
-            />
-          </div>
-
-          {/* RIGHT */}
-          <div
-            className={`
-        ${selectedChat ? "block" : "hidden md:flex"}
-        flex-1 h-full
-      `}
-          >
-
-            {!selectedChat ? (
-              <div className="flex flex-1 items-center justify-center bg-[#efeae2] dark:bg-[#0b141a] text-gray-500 dark:text-gray-300">
-                <div className="text-center text-gray-400">
-                  <h2 className="text-xl">Select archived chat</h2>
-                  <p className="text-sm mt-2">
-                    Messages you archive will appear here
-                  </p>
-                </div>
-              </div>
-            ) : (
+            >
               <Chat
                 selectedChat={selectedChat}
                 chats={chats}
                 archivedChats={archivedChats}
                 setChats={setChats}
-                setArchivedChats={setArchivedChats}
                 setSelectedChat={setSelectedChat}
               />
-            )}
+            </div>
 
           </div>
-        </div>
-      )}
+        )}
 
-      {activeTab === "call" && (
-        <div className="flex flex-1 h-full">
-          <CallsPage />
-        </div>
-      )}
+        {activeTab === "status" && (
+          <div className="flex-1 flex items-center justify-center h-full">
+            <StatusPage />
+          </div>
+        )}
 
-      {activeTab === "channel" && (
-        <div className="flex flex-1 h-full">
-          <ChannelPage />
-        </div>
-      )}
-      {activeTab === "profile" && (
-        <div className="flex flex-1 h-full">
-          <ProfilePage />
-        </div>
-      )}
-    </div>
+        {activeTab === "archive" && (
+          <div className="flex flex-1 h-full">
+
+            {/* LEFT */}
+            <div
+              className={`
+        ${selectedChat ? "hidden md:block" : "block"}
+        w-full md:w-[350px] h-full
+      `}
+            >
+              <ArchivePage
+                chats={archivedChats}
+                unarchiveChat={unarchiveChat}
+                setSelectedChat={setSelectedChat}
+              />
+            </div>
+
+            {/* RIGHT */}
+            <div
+              className={`
+        ${selectedChat ? "block" : "hidden md:flex"}
+        flex-1 h-full
+      `}
+            >
+
+              {!selectedChat ? (
+                <div className="flex flex-1 items-center justify-center bg-[#efeae2] dark:bg-[#0b141a] text-gray-500 dark:text-gray-300">
+                  <div className="text-center text-gray-400">
+                    <h2 className="text-xl">Select archived chat</h2>
+                    <p className="text-sm mt-2">
+                      Messages you archive will appear here
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <Chat
+                  selectedChat={selectedChat}
+                  chats={chats}
+                  archivedChats={archivedChats}
+                  setChats={setChats}
+                  setArchivedChats={setArchivedChats}
+                  setSelectedChat={setSelectedChat}
+                />
+              )}
+
+            </div>
+          </div>
+        )}
+
+        {activeTab === "call" && (
+          <div className="flex flex-1 h-full">
+            <CallsPage />
+          </div>
+        )}
+
+        {activeTab === "channel" && (
+          <div className="flex flex-1 h-full">
+            <ChannelPage />
+          </div>
+        )}
+        {activeTab === "profile" && (
+          <div className="flex flex-1 h-full">
+            <ProfilePage />
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

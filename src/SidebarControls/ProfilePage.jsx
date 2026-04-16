@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // ✅ useEffect added
 import {
   FiSettings,
   FiUser,
@@ -9,11 +9,36 @@ import {
   FiBell,
   FiHelpCircle,
   FiCommand,
-  FiLogOut, // ✅ added
+  FiLogOut,
 } from "react-icons/fi";
 
 const ProfilePage = () => {
   const [active, setActive] = useState("Privacy");
+
+  // ✅ NEW: user state
+  const [user, setUser] = useState(null);
+
+  // ✅ NEW: API call
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+
+        const res = await fetch("https://api.escuelajs.co/api/v1/auth/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+        setUser(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   // ✅ logout function
   const handleLogout = () => {
@@ -31,8 +56,6 @@ const ProfilePage = () => {
     { name: "Notifications", desc: "Messages, groups, sounds", icon: <FiBell /> },
     { name: "Keyboard shortcuts", desc: "Quick actions", icon: <FiCommand /> },
     { name: "Help and feedback", desc: "Help centre, contact us", icon: <FiHelpCircle /> },
-
-    // ✅ NEW (logout)
     { name: "Logout", desc: "Sign out from account", icon: <FiLogOut />, isLogout: true },
   ];
 
@@ -50,7 +73,15 @@ const ProfilePage = () => {
 
         {/* HEADER */}
         <div className="p-4">
-          <h2 className="text-xl font-semibold">Yash Vasani. ™</h2>
+          {/* ✅ dynamic name */}
+          <h2 className="text-xl font-semibold">
+            {user?.name || "Loading..."}
+          </h2>
+
+          {/* ✅ email (optional) */}
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            {user?.email}
+          </p>
         </div>
 
         {/* SEARCH */}
@@ -69,7 +100,7 @@ const ProfilePage = () => {
         {/* PROFILE IMAGE */}
         <div className="flex flex-col items-center py-4">
           <img
-            src="https://i.pravatar.cc/100"
+            src={user?.avatar || "https://i.pravatar.cc/100"} // ✅ dynamic image
             className="w-24 h-24 rounded-full"
           />
         </div>
@@ -81,7 +112,7 @@ const ProfilePage = () => {
               key={item.name}
               onClick={() => {
                 if (item.isLogout) {
-                  handleLogout(); // ✅ logout click
+                  handleLogout();
                 } else {
                   setActive(item.name);
                 }
