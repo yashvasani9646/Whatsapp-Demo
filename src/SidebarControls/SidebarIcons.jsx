@@ -1,9 +1,10 @@
 import React from 'react'
 import { BsChatLeftText } from "react-icons/bs";
-// import { HiOutlineStatusOnline } from "react-icons/hi";
 import { MdOutlineArchive, MdCall, MdOutlineCampaign } from "react-icons/md";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { MdOutlineWifiTetheringErrorRounded } from "react-icons/md";
+import { FaWhatsapp } from "react-icons/fa"; // 👈 add this
+import { RiAppsLine } from "react-icons/ri";
 
 const SidebarIcons = ({ setActiveTab, activeTab, darkMode, setDarkMode }) => {
 
@@ -31,6 +32,12 @@ const SidebarIcons = ({ setActiveTab, activeTab, darkMode, setDarkMode }) => {
             border-r border-gray-200 dark:border-gray-800
         ">
 
+            {/* 🔥 LOGO */}
+            {/* 🔥 PRODUCT */}
+            <div className={iconClass("product")} onClick={() => setActiveTab("product")}>
+                <RiAppsLine size={22} />
+                {tooltip("Product")}
+            </div>
             {/* CHAT */}
             <div className={iconClass("chat")} onClick={() => setActiveTab("chat")}>
                 <BsChatLeftText size={22} />
@@ -47,7 +54,6 @@ const SidebarIcons = ({ setActiveTab, activeTab, darkMode, setDarkMode }) => {
             {/* ARCHIVE */}
             <div className={iconClass("archive")} onClick={() => setActiveTab("archive")}>
                 <MdOutlineArchive size={22} />
-
                 {tooltip("Archive")}
             </div>
 

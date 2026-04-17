@@ -11,6 +11,8 @@ import ChannelPage from "../SidebarControls/ChannlPage";
 import ProfilePage from "../SidebarControls/ProfilePage";
 import { useEffect } from "react";
 import LoginPage from "../LoginPage/LoginPage";
+import Product from "../SidebarControls/Product";
+
 function App() {
   const [selectedChat, setSelectedChat] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
@@ -439,6 +441,11 @@ function App() {
         {activeTab === "profile" && (
           <div className="flex flex-1 h-full">
             <ProfilePage />
+          </div>
+        )}
+        {activeTab === "product" && (
+          <div className="flex-1 h-full">
+            <Product/>
           </div>
         )}
       </div>
