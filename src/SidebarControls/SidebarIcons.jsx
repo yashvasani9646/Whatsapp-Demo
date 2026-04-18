@@ -3,16 +3,16 @@ import { BsChatLeftText } from "react-icons/bs";
 import { MdOutlineArchive, MdCall, MdOutlineCampaign } from "react-icons/md";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { MdOutlineWifiTetheringErrorRounded } from "react-icons/md";
-import { FaWhatsapp } from "react-icons/fa"; // 👈 add this
 import { RiAppsLine } from "react-icons/ri";
 
 const SidebarIcons = ({ setActiveTab, activeTab, darkMode, setDarkMode }) => {
 
+    // 🔥 IMPROVED ICON CLASS (light + dark perfect)
     const iconClass = (tab) =>
-        `relative cursor-pointer p-2 rounded-xl transition group
+        `relative cursor-pointer p-2 rounded-xl transition group flex items-center justify-center
         ${activeTab === tab
-            ? "bg-green-100 text-green-600 dark:bg-[#202c33]"
-            : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#202c33]"}`;
+            ? "bg-green-100 text-green-600 dark:bg-[#202c33] dark:text-green-400"
+            : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#202c33] hover:text-black dark:hover:text-white"}`;
 
     const tooltip = (text) => (
         <span className="absolute left-14 top-1/2 -translate-y-1/2 
@@ -32,12 +32,6 @@ const SidebarIcons = ({ setActiveTab, activeTab, darkMode, setDarkMode }) => {
             border-r border-gray-200 dark:border-gray-800
         ">
 
-            {/* 🔥 LOGO */}
-            {/* 🔥 PRODUCT */}
-            <div className={iconClass("product")} onClick={() => setActiveTab("product")}>
-                <RiAppsLine size={22} />
-                {tooltip("Product")}
-            </div>
             {/* CHAT */}
             <div className={iconClass("chat")} onClick={() => setActiveTab("chat")}>
                 <BsChatLeftText size={22} />
@@ -57,6 +51,12 @@ const SidebarIcons = ({ setActiveTab, activeTab, darkMode, setDarkMode }) => {
                 {tooltip("Archive")}
             </div>
 
+            {/* PRODUCT */}
+            <div className={iconClass("product")} onClick={() => setActiveTab("product")}>
+                <RiAppsLine size={22} />
+                {tooltip("Product")}
+            </div>
+
             {/* CALL */}
             <div className={iconClass("call")} onClick={() => setActiveTab("call")}>
                 <MdCall size={22} />
@@ -71,7 +71,8 @@ const SidebarIcons = ({ setActiveTab, activeTab, darkMode, setDarkMode }) => {
 
             {/* DARK MODE */}
             <div
-                className="relative group cursor-pointer p-2 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#202c33]"
+                className="relative group cursor-pointer p-2 rounded-xl flex items-center justify-center
+                text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#202c33] hover:text-black dark:hover:text-white transition"
                 onClick={() => setDarkMode(prev => !prev)}
             >
                 {darkMode ? <MdLightMode size={22} /> : <MdDarkMode size={22} />}
@@ -82,7 +83,7 @@ const SidebarIcons = ({ setActiveTab, activeTab, darkMode, setDarkMode }) => {
             <div className="mt-auto relative group">
                 <img
                     src="https://i.pravatar.cc/40"
-                    className="w-9 h-9 rounded-full cursor-pointer"
+                    className="w-9 h-9 rounded-full cursor-pointer hover:opacity-90 transition"
                     onClick={() => setActiveTab("profile")}
                 />
                 {tooltip("Profile")}

@@ -18,25 +18,30 @@ const Product = () => {
 
     if (loading) {
         return (
-            <div className="flex-1 flex items-center justify-center h-screen bg-[#efeae2]">
+            <div className="flex-1 flex items-center justify-center h-screen bg-[#efeae2] dark:bg-[#0b141a]">
                 <div className="flex flex-col items-center gap-2">
                     <div className="w-10 h-10 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-                    <p className="text-gray-500 text-sm">Loading products...</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">
+                        Loading products...
+                    </p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="flex flex-1 h-screen">
+        <div className="flex flex-1 h-screen bg-[#efeae2] dark:bg-[#0b141a]">
 
             {/* LEFT SIDE */}
             <div className={`
-                flex-1 p-4 bg-[#efeae2] overflow-y-auto
+                flex-1 p-4 overflow-y-auto
+                bg-[#efeae2] dark:bg-[#0b141a]
                 ${selectedProduct ? "hidden md:block" : "block"}
             `}>
 
-                <h2 className="text-xl font-semibold mb-4">Products</h2>
+                <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">
+                    Products
+                </h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
@@ -50,7 +55,12 @@ const Product = () => {
                                     setDetailLoading(false);
                                 }, 500);
                             }}
-                            className="bg-white rounded-xl shadow p-3 hover:shadow-md transition cursor-pointer"
+                            className="
+                                bg-white dark:bg-[#202c33]
+                                rounded-xl shadow p-3
+                                hover:shadow-md dark:hover:bg-[#2a3942]
+                                transition cursor-pointer
+                            "
                         >
                             <img
                                 src={item.images?.[0]}
@@ -58,11 +68,11 @@ const Product = () => {
                                 className="w-full h-40 object-cover rounded-lg"
                             />
 
-                            <h3 className="mt-2 font-medium text-sm line-clamp-2">
+                            <h3 className="mt-2 text-sm line-clamp-2 text-gray-800 dark:text-gray-200">
                                 {item.title}
                             </h3>
 
-                            <p className="text-green-600 font-semibold mt-1">
+                            <p className="text-gray-600 dark:text-gray-300 mt-4 text-sm">
                                 ₹ {item.price}
                             </p>
                         </div>
@@ -72,11 +82,11 @@ const Product = () => {
             </div>
 
             {/* RIGHT SIDE */}
-            <div className={`
-                flex-1 md:w-[420px] bg-[#f0f2f5] border-l p-4
-                ${selectedProduct ? "block" : "hidden md:flex"}
-            `}>
-
+            <div className="
+                flex-1 md:w-[420px] p-4
+                bg-[#f0f2f5] dark:bg-[#111b21]
+                border-l border-gray-200 dark:border-gray-800
+            ">
                 {detailLoading ? (
                     <div className="flex items-center justify-center w-full">
                         <div className="flex flex-col items-center gap-2">
@@ -89,9 +99,11 @@ const Product = () => {
                         Select a product
                     </div>
                 ) : (
-                    <div className="w-full bg-white rounded-2xl shadow p-4 overflow-y-auto h-full">
+                    <div className="
+                        w-full rounded-2xl shadow p-4 overflow-y-auto h-full
+                        bg-white dark:bg-[#202c33]
+                    ">
 
-                        {/* 🔙 BACK BUTTON (mobile only) */}
                         <button
                             onClick={() => setSelectedProduct(null)}
                             className="md:hidden mb-3 text-green-600 text-sm"
@@ -104,7 +116,7 @@ const Product = () => {
                             className="w-full h-56 object-cover rounded-xl"
                         />
 
-                        <h2 className="text-lg font-semibold mt-4">
+                        <h2 className="text-lg font-semibold mt-4 text-black dark:text-white">
                             {selectedProduct.title}
                         </h2>
 
@@ -116,13 +128,12 @@ const Product = () => {
                             {selectedProduct.category?.name}
                         </p>
 
-                        <p className="text-gray-600 mt-4 text-sm">
+                        <p className="text-gray-600 dark:text-gray-300 mt-4 text-sm">
                             {selectedProduct.description}
                         </p>
 
                     </div>
                 )}
-
             </div>
 
         </div>
