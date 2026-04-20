@@ -2,25 +2,48 @@ import React, { useEffect, useState } from "react";
 
 const Product = () => {
     const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [detailLoading, setDetailLoading] = useState(false);
 
-    useEffect(() => {
-        fetch("https://api.escuelajs.co/api/v1/products?limit=10&offset=10")
+    // 🔥 PRODUCTS FETCH FUNCTION (UPDATED)
+    const fetchProducts = (categoryId = null) => {
+        setLoading(true);
+
+        const url = categoryId
+            ? `https://api.escuelajs.co/api/v1/products/?categoryId=${categoryId}`
+            : `https://api.escuelajs.co/api/v1/products?limit=20&offset=0`;
+
+        fetch(url)
             .then((res) => res.json())
             .then((data) => {
                 setProducts(data);
                 setLoading(false);
             })
             .catch(() => setLoading(false));
+    };
+
+    // 🔥 INITIAL LOAD
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    // 🔥 CATEGORY API
+    useEffect(() => {
+        fetch("https://api.escuelajs.co/api/v1/categories?limit=10")
+            .then((res) => res.json())
+            .then((data) => setCategories(data))
+            .catch((err) => console.log(err));
     }, []);
 
     if (loading) {
         return (
             <div className="flex-1 flex items-center justify-center h-screen bg-[#efeae2] dark:bg-[#0b141a]">
                 <div className="flex flex-col items-center gap-2">
-                    <div className="w-10 h-10 border-4 border-green-500 dark:border-green-400 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-10 h-10 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
                     <p className="text-gray-500 dark:text-gray-400 text-sm">
                         Loading products...
                     </p>
@@ -43,6 +66,43 @@ const Product = () => {
                     Products
                 </h2>
 
+                {/* 🔥 CATEGORY FILTER */}
+                <div className="flex gap-2 overflow-x-auto mb-4">
+
+                    <button
+                        onClick={() => {
+                            setSelectedCategory(null);
+                            fetchProducts();
+                        }}
+                        className={`px-3 py-1 rounded-full text-sm whitespace-nowrap
+                        ${!selectedCategory
+                                ? "bg-green-500 text-white"
+                                : "bg-gray-200 dark:bg-[#202c33] text-black dark:text-white"
+                            }`}
+                    >
+                        All
+                    </button>
+
+                    {categories.map(cat => (
+                        <button
+                            key={cat.id}
+                            onClick={() => {
+                                setSelectedCategory(cat.id);
+                                fetchProducts(cat.id);
+                            }}
+                            className={`px-3 py-1 rounded-full text-sm whitespace-nowrap
+                            ${selectedCategory === cat.id
+                                    ? "bg-green-500 text-white"
+                                    : "bg-gray-200 dark:bg-[#202c33] text-black dark:text-white"
+                                }`}
+                        >
+                            {cat.name}
+                        </button>
+                    ))}
+
+                </div>
+
+                {/* 🔥 PRODUCTS GRID */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
                     {products.map((item) => (
@@ -53,14 +113,14 @@ const Product = () => {
                                 setTimeout(() => {
                                     setSelectedProduct(item);
                                     setDetailLoading(false);
-                                }, 500);
+                                }, 400);
                             }}
                             className="
-    bg-white dark:bg-[#202c33]
-    rounded-xl shadow p-3
-    hover:shadow-md dark:hover:bg-[#2a3942]
-    transition cursor-pointer
-"
+                                bg-white dark:bg-[#202c33]
+                                rounded-xl shadow p-3
+                                hover:shadow-md dark:hover:bg-[#2a3942]
+                                transition cursor-pointer
+                            "
                         >
                             <img
                                 src={item.images?.[0]}
@@ -84,7 +144,7 @@ const Product = () => {
             {/* RIGHT SIDE */}
             <div className="
                 flex-1 md:w-[420px] p-4
-               bg-[#f0f2f5] dark:bg-[#111b21]
+                bg-[#f0f2f5] dark:bg-[#111b21]
                 border-l border-gray-200 dark:border-gray-800
             ">
                 {detailLoading ? (
