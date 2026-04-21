@@ -5,40 +5,40 @@ const Product = () => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [detailLoading, setDetailLoading] = useState(false);
 
     const getImage = (img) => {
-        if (!img || img.includes("wikia")) {
+        if (!img || !img.startsWith("http")) {
             return "https://picsum.photos/300/200";
         }
         return img;
     };
 
-    // 🔥 PRODUCTS FETCH
     const fetchProducts = (categoryId = null) => {
         setLoading(true);
 
         const url = categoryId
-            ? `https://api.escuelajs.co/api/v1/products/?categoryId=${categoryId}&limit=50`
-            : `https://api.escuelajs.co/api/v1/products?limit=50&offset=0`;
+            ? `https://api.escuelajs.co/api/v1/products/?categoryId=${categoryId}`
+            : `https://api.escuelajs.co/api/v1/products`;
 
         fetch(url)
             .then((res) => res.json())
             .then((data) => {
-                setProducts(data);
-                setLoading(false);
-                setSelectedProduct(null);
+                setTimeout(() => {
+                    setProducts(data);
+                    setSelectedProduct(null);
+                    setLoading(false);
+                }, 300);
             })
             .catch(() => setLoading(false));
     };
-    // 🔥 INITIAL LOAD
+
     useEffect(() => {
         fetchProducts();
     }, []);
 
-    // 🔥 CATEGORY API
     useEffect(() => {
         fetch("https://api.escuelajs.co/api/v1/categories?limit=10")
             .then((res) => res.json())
@@ -46,160 +46,115 @@ const Product = () => {
             .catch((err) => console.log(err));
     }, []);
 
-    // 🔥 MAIN LOADING
-    if (loading) {
-        return (
-            <div className="flex-1 flex items-center justify-center h-screen bg-[#efeae2] dark:bg-[#0b141a]">
-                <div className="flex flex-col items-center gap-2">
-                    <div className="w-10 h-10 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">
-                        Loading products...
-                    </p>
-                </div>
-            </div>
-        );
-    }
-
     return (
-        <div className="flex flex-1 h-screen bg-[#efeae2] dark:bg-[#0b141a]">
+        <div className="flex flex-1 h-full bg-gray-100 dark:bg-[#0b141a] text-black dark:text-white">
 
-            {/* LEFT SIDE */}
-            <div className={`
-                flex-1 p-4 overflow-y-auto
-                bg-[#efeae2] dark:bg-[#0b141a]
-                ${selectedProduct ? "hidden md:block" : "block"}
-            `}>
-
-                <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">
-                    Products
+            {/* LEFT */}
+            <div
+                className={`w-full md:w-[45%] lg:w-[50%] p-2 md:p-4 overflow-y-auto bg-white dark:bg-[#111b21] ${selectedProduct ? "hidden md:block" : "block"
+                    }`}
+            >
+                <h2 className="text-xl font-semibold mb-4">
+                    Products ({products.length})
                 </h2>
 
-                {/* 🔥 CATEGORY FILTER */}
-                {/* 🔥 CATEGORY FILTER */}
-                <div className="sticky top-0 z-10 bg-[#efeae2] dark:bg-[#0b141a] pb-3">
+                {/* CATEGORY */}
+                <div className="sticky top-0 z-10 bg-white dark:bg-[#111b21] pb-3 border-b border-gray-200 dark:border-gray-700">
 
-                    <div className="flex gap-2 overflow-x-auto no-scrollbar px-1">
+                    <div className="relative">
 
-                        {/* ALL */}
-                        <button
-                            onClick={() => {
-                                setSelectedCategory(null);
-                                fetchProducts();
-                            }}
-                            className={`
-                px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition
-                ${!selectedCategory
-                                    ? "bg-green-500 text-white shadow"
-                                    : "bg-gray-200 dark:bg-[#202c33] text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-[#2a3942]"
-                                }
-            `}
-                        >
-                            All
-                        </button>
+                        {/* FADE */}
+                        <div className="pointer-events-none absolute left-0 top-0 h-full w-12 bg-gradient-to-r from-white dark:from-[#111b21] to-transparent z-10" />
+                        <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-white dark:from-[#111b21] to-transparent z-10" />
 
-                        {/* CATEGORY LIST */}
-                        {categories.map(cat => (
+                        {/* SCROLL */}
+                        <div className="flex gap-3 px-4 overflow-x-auto no-scrollbar">
+
                             <button
-                                key={cat.id}
                                 onClick={() => {
-                                    setSelectedCategory(cat.id);
-                                    fetchProducts(cat.id);
+                                    setSelectedCategory(null);
+                                    fetchProducts();
                                 }}
-                                className={`
-                    px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition
-                    ${selectedCategory === cat.id
-                                        ? "bg-green-500 text-white shadow"
-                                        : "bg-gray-200 dark:bg-[#202c33] text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-[#2a3942]"
-                                    }
-                `}
+                                className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition ${!selectedCategory
+                                    ? "bg-green-500 text-white"
+                                    : "bg-gray-200 dark:bg-[#202c33] text-black dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-[#2a3942]"
+                                    }`}
                             >
-                                {cat.name}
+                                All
                             </button>
-                        ))}
 
-                    </div>
-
-                </div>
-                {/* 🔥 EMPTY STATE */}
-                {products.length === 0 && (
-                    <div className="text-center text-gray-400 mt-10">
-                        No products found
-                    </div>
-                )}
-
-                {/* 🔥 PRODUCTS GRID */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-
-                    {products.map((item) => (
-                        <div
-                            key={item.id}
-                            onClick={() => {
-                                setDetailLoading(true);
-                                setTimeout(() => {
-                                    setSelectedProduct(item);
-                                    setDetailLoading(false);
-                                }, 400);
-                            }}
-                            className="
-                                bg-white dark:bg-[#202c33]
-                                rounded-xl shadow p-3
-                                hover:shadow-md dark:hover:bg-[#2a3942]
-                                transition cursor-pointer
-                            "
-                        >
-
-                            {/* IMAGE FIX */}
-                            <img
-                                src={getImage(item.images?.[0])}
-                                onError={(e) => {
-                                    e.target.src = "https://picsum.photos/300/200";
-                                }}
-                                alt={item.title}
-                                className="w-full h-40 object-cover rounded-lg"
-                            />
-
-
-
-
-
-
-                            <h3 className="mt-2 text-sm line-clamp-2 text-gray-800 dark:text-gray-200">
-                                {item.title}
-                            </h3>
-
-                            <p className="text-gray-600 dark:text-gray-300 mt-4 text-sm">
-                                ₹ {item.price}
-                            </p>
-
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat.id}
+                                    onClick={() => {
+                                        setSelectedCategory(cat.id);
+                                        fetchProducts(cat.id);
+                                    }}
+                                    className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition ${selectedCategory === cat.id
+                                        ? "bg-green-500 text-white"
+                                        : "bg-gray-200 dark:bg-[#202c33] text-black dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-[#2a3942]"
+                                        }`}
+                                >
+                                    {cat.name}
+                                </button>
+                            ))}
                         </div>
-                    ))}
+                    </div>
+                </div>
 
+                {/* GRID */}
+                <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 mt-3 ${loading ? "opacity-50" : ""}`}>
+
+                    {loading
+                        ? Array(8).fill(0).map((_, i) => (
+                            <div key={i} className="bg-white dark:bg-[#202c33] p-2 rounded-xl animate-pulse">
+                                <div className="w-full h-40 bg-gray-300 dark:bg-[#2a3942] rounded-lg"></div>
+                            </div>
+                        ))
+                        : products.map((item) => (
+                            <div
+                                key={item.id}
+                                onClick={() => {
+                                    setDetailLoading(true);
+                                    setTimeout(() => {
+                                        setSelectedProduct(item);
+                                        setDetailLoading(false);
+                                    }, 300);
+                                }}
+                                className={`rounded-xl p-2 cursor-pointer transition-all duration-300 ${selectedProduct?.id === item.id
+                                    ? "bg-green-100 dark:bg-[#1f2c33] border border-green-500 shadow-lg scale-[1.02]"
+                                    : "bg-white dark:bg-[#202c33] hover:bg-gray-100 dark:hover:bg-[#2a3942]"
+                                    }`}
+                            >
+                                <img
+                                    src={getImage(item.images?.[0])}
+                                    alt={item.title}
+                                    className="w-full h-[220px] sm:h-[240px] object-cover rounded-lg"
+                                />
+
+                                <h3 className="mt-2 text-sm line-clamp-2">
+                                    {item.title}
+                                </h3>
+
+                                <p className="mt-2 text-sm text-green-600 dark:text-green-400">
+                                    ₹ {item.price}
+                                </p>
+                            </div>
+                        ))}
                 </div>
             </div>
 
-            {/* RIGHT SIDE */}
-            <div className="
-    flex-1 md:w-[420px] p-4
-    bg-[#f0f2f5] dark:bg-[#111b21]
-    border-l border-gray-200 dark:border-gray-800
-    flex items-center justify-center
-">
+            {/* RIGHT */}
+            <div className="w-full md:w-[55%] lg:w-[50%] px-4 md:px-6 py-4 border-l border-gray-200 dark:border-gray-700 flex justify-center items-start pt-6 bg-gray-100 dark:bg-[#0b141a]">
+
                 {detailLoading ? (
-                    <div className="flex items-center justify-center w-full">
-                        <div className="flex flex-col items-center gap-2">
-                            <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-                            <p className="text-gray-400 text-sm">Loading...</p>
-                        </div>
-                    </div>
+                    <div>Loading...</div>
                 ) : !selectedProduct ? (
-                    <div className="flex items-center justify-center w-full text-gray-400">
+                    <div className="flex items-center justify-center h-full text-gray-400">
                         Select a product
                     </div>
                 ) : (
-                    <div className="
-                        w-full rounded-2xl shadow p-4 overflow-y-auto h-full
-                        bg-white dark:bg-[#202c33]
-                    ">
+                    <div className="max-w-2xl w-full bg-white dark:bg-[#202c33] p-4 md:p-5 rounded-2xl shadow max-h-[90%] overflow-y-auto">
 
                         <button
                             onClick={() => setSelectedProduct(null)}
@@ -208,35 +163,32 @@ const Product = () => {
                             ← Back
                         </button>
 
-                        {/* DETAIL IMAGE FIX */}
-                        <img
-                            src={getImage(selectedProduct.images?.[0])}
-                            onError={(e) => {
-                                e.target.src = "https://picsum.photos/400/300";
-                            }}
-                            className="w-full h-56 object-cover rounded-xl"
-                        />
+                        <div className="w-full h-64 bg-gray-100 dark:bg-[#111b21] rounded-xl flex items-center justify-center overflow-hidden">
+                            <img
+                                src={getImage(selectedProduct.images?.[0])}
+                                alt={selectedProduct.title}
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
 
-                        <h2 className="text-lg font-semibold mt-4 text-black dark:text-white">
+                        <h2 className="mt-4 font-semibold text-lg">
                             {selectedProduct.title}
                         </h2>
 
-                        <p className="text-green-600 text-xl font-bold mt-2">
+                        <p className="text-green-600 dark:text-green-400 mt-2 text-lg font-semibold">
                             ₹ {selectedProduct.price}
                         </p>
 
-                        <p className="text-xs text-gray-400 mt-1">
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                             {selectedProduct.category?.name}
                         </p>
 
-                        <p className="text-gray-600 dark:text-gray-300 mt-4 text-sm">
+                        <p className="mt-4 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                             {selectedProduct.description}
                         </p>
-
                     </div>
                 )}
             </div>
-
         </div>
     );
 };
