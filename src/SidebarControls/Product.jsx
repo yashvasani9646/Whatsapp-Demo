@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useProduct } from "../Context/ProductContext";
 
 const Product = () => {
-    const [products, setProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const [loading, setLoading] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [detailLoading, setDetailLoading] = useState(false);
+    const {
+        products,
+        categories,
+        selectedCategory,
+        setSelectedCategory,
+        loading,
+        selectedProduct,
+        setSelectedProduct,
+        detailLoading,
+        setDetailLoading,
+        fetchProducts
+    } = useProduct();
 
     const getImage = (img) => {
         if (!img || !img.startsWith("http")) {
@@ -16,60 +23,45 @@ const Product = () => {
         return img;
     };
 
-    const fetchProducts = (categoryId = null) => {
-        setLoading(true);
-
-        const url = categoryId
-            ? `https://api.escuelajs.co/api/v1/products/?categoryId=${categoryId}`
-            : `https://api.escuelajs.co/api/v1/products`;
-
-        fetch(url)
-            .then((res) => res.json())
-            .then((data) => {
-                setTimeout(() => {
-                    setProducts(data);
-                    setSelectedProduct(null);
-                    setLoading(false);
-                }, 300);
-            })
-            .catch(() => setLoading(false));
-    };
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
-
-    useEffect(() => {
-        fetch("https://api.escuelajs.co/api/v1/categories?limit=10")
-            .then((res) => res.json())
-            .then((data) => setCategories(data))
-            .catch((err) => console.log(err));
-    }, []);
-
     return (
         <div className="flex flex-1 h-full bg-gray-100 dark:bg-[#0b141a] text-black dark:text-white">
 
             {/* LEFT */}
-            <div
-                className={`w-full md:w-[45%] lg:w-[50%] p-2 md:p-4 overflow-y-auto bg-white dark:bg-[#111b21] ${selectedProduct ? "hidden md:block" : "block"
-                    }`}
-            >
+            <div className={`w-full md:w-[45%] lg:w-[50%] p-2 md:p-4 overflow-y-auto bg-white dark:bg-[#111b21] ${selectedProduct ? "hidden md:block" : "block"}`}>
+
                 <h2 className="text-xl font-semibold mb-4">
                     Products ({products.length})
                 </h2>
 
-                {/* CATEGORY */}
-                <div className="sticky top-0 z-10 bg-white dark:bg-[#111b21] pb-3 border-b border-gray-200 dark:border-gray-700">
+                <div className="sticky top-0 z-10 bg-white dark:bg-[#111b21] pb-2 border-b border-gray-200 dark:border-gray-700">
 
-                    <div className="relative">
+                    <div className="flex items-center gap-2">
 
-                        {/* FADE */}
-                        <div className="pointer-events-none absolute left-0 top-0 h-full w-12 bg-gradient-to-r from-white dark:from-[#111b21] to-transparent z-10" />
-                        <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-white dark:from-[#111b21] to-transparent z-10" />
+                        {/* LEFT ARROW */}
+                        <button
+                            onClick={() => {
+                                document.getElementById("catScroll")?.scrollBy({
+                                    left: -200,
+                                    behavior: "smooth",
+                                });
+                            }}
+                            className="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full 
+            bg-white dark:bg-[#2a3942]
+            border border-gray-300 dark:border-gray-600
+            shadow hover:shadow-md hover:scale-105 transition"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
 
-                        {/* SCROLL */}
-                        <div className="flex gap-3 px-4 overflow-x-auto no-scrollbar">
+                        {/* CATEGORY LIST */}
+                        <div
+                            id="catScroll"
+                            className="flex gap-3 overflow-x-auto scroll-smooth no-scrollbar flex-1"
+                        >
 
+                            {/* ALL */}
                             <button
                                 onClick={() => {
                                     setSelectedCategory(null);
@@ -77,12 +69,13 @@ const Product = () => {
                                 }}
                                 className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition ${!selectedCategory
                                     ? "bg-green-500 text-white"
-                                    : "bg-gray-200 dark:bg-[#202c33] text-black dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-[#2a3942]"
+                                    : "bg-gray-200 dark:bg-[#202c33] text-black dark:text-gray-300"
                                     }`}
                             >
                                 All
                             </button>
 
+                            {/* CATEGORY MAP */}
                             {categories.map((cat) => (
                                 <button
                                     key={cat.id}
@@ -92,13 +85,32 @@ const Product = () => {
                                     }}
                                     className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition ${selectedCategory === cat.id
                                         ? "bg-green-500 text-white"
-                                        : "bg-gray-200 dark:bg-[#202c33] text-black dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-[#2a3942]"
+                                        : "bg-gray-200 dark:bg-[#202c33] text-black dark:text-gray-300"
                                         }`}
                                 >
                                     {cat.name}
                                 </button>
                             ))}
                         </div>
+
+                        {/* RIGHT ARROW */}
+                        <button
+                            onClick={() => {
+                                document.getElementById("catScroll")?.scrollBy({
+                                    left: 200,
+                                    behavior: "smooth",
+                                });
+                            }}
+                            className="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full 
+            bg-white dark:bg-[#2a3942]
+            border border-gray-300 dark:border-gray-600
+            shadow hover:shadow-md hover:scale-105 transition"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+
                     </div>
                 </div>
 
@@ -148,7 +160,31 @@ const Product = () => {
             <div className="w-full md:w-[55%] lg:w-[50%] px-4 md:px-6 py-4 border-l border-gray-200 dark:border-gray-700 flex justify-center items-start pt-6 bg-gray-100 dark:bg-[#0b141a]">
 
                 {detailLoading ? (
-                    <div>Loading...</div>
+                    <div className="w-full flex flex-col items-center justify-center mt-10 gap-4">
+
+                        <div className="w-12 h-12 border-4 border-gray-300 border-t-green-500 rounded-full animate-spin"></div>
+
+                        <div className="w-full max-w-2xl bg-white dark:bg-[#202c33] p-4 md:p-5 rounded-2xl shadow animate-pulse">
+
+                            <div className="w-full h-64 bg-gray-300 dark:bg-[#2a3942] rounded-xl"></div>
+
+                            <div className="mt-4 h-5 bg-gray-300 dark:bg-[#2a3942] rounded w-3/4"></div>
+
+                            <div className="mt-2 h-5 bg-gray-300 dark:bg-[#2a3942] rounded w-1/4"></div>
+
+                            <div className="mt-2 h-4 bg-gray-300 dark:bg-[#2a3942] rounded w-1/3"></div>
+
+                            <div className="mt-4 space-y-2">
+                                <div className="h-3 bg-gray-300 dark:bg-[#2a3942] rounded"></div>
+                                <div className="h-3 bg-gray-300 dark:bg-[#2a3942] rounded"></div>
+                                <div className="h-3 bg-gray-300 dark:bg-[#2a3942] rounded w-5/6"></div>
+                            </div>
+
+                        </div>
+
+                        <p className="text-sm text-gray-400">Loading product details...</p>
+                    </div>
+
                 ) : !selectedProduct ? (
                     <div className="flex items-center justify-center h-full text-gray-400">
                         Select a product

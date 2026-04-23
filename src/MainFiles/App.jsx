@@ -445,7 +445,7 @@ function App() {
         )}
         {activeTab === "product" && (
           <div className="flex-1 h-full">
-            <Product/>
+            <Product />
           </div>
         )}
       </div>
