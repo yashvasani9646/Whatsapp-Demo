@@ -6,10 +6,12 @@ const ProductContext = createContext();
 // 2. Provider banate hai
 export const ProductProvider = ({ children }) => {
 
+
     // 🔹 STATES (same jo tu use kar raha tha)
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    console.log("hello")
 
     const [loading, setLoading] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
